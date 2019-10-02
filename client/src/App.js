@@ -1,43 +1,41 @@
 import React, { useState, useEffect } from "react";
+import { Pagination } from "semantic-ui-react";
+import Users from "./components/Users";
 import axios from "axios";
-import Posts from "./components/Posts";
-import Pagination from "./components/Pagination";
-// import Paginate from "./components/Paginate";
 
 const App = () => {
-  const [posts, setPosts] = useState([]);
+  const [active, setActive] = useState(1);
+  const [pages, setPages] = useState(0);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage, setPostPerPage] = useState(10);
+  const [limit] = useState(5);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchUsers = async () => {
       setLoading(true);
-      // const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
-      const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
-      setPosts(res.data);
+      const res = await axios.get(
+        `http://localhost:3000/users?page=${active}&limit=${limit}`
+      );
+      setPages(res.data.pages);
+      setUsers(res.data.results);
       setLoading(false);
     };
 
-    fetchPosts();
-  }, []);
+    fetchUsers();
+  }, [active]);
 
-  // Get current posts
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
-  // Change page
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const handlePaginationChange = (e, { activePage }) => setActive(activePage);
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-primary mb-3">My Blog</h1>
-      <Posts posts={currentPosts} loading={loading} />
+    <div>
+      <h1>Pagination</h1>
+      <Users users={users} loading={loading} />
       <Pagination
-        postsPerPage={postPerPage}
-        totalPosts={posts.length}
-        paginate={paginate}
+        boundaryRange={0}
+        defaultActivePage={active}
+        onPageChange={handlePaginationChange}
+        siblingRange={1}
+        totalPages={pages}
       />
     </div>
   );

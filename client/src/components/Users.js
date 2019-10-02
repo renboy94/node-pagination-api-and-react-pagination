@@ -1,19 +1,19 @@
 import React from "react";
 
-const Posts = ({ posts, loading }) => {
+const Users = ({ users, loading }) => {
   if (loading) {
     return <h2>Loading...</h2>;
   }
 
   return (
     <ul className="list-group mb-4">
-      {posts.map(post => (
-        <li key={post.id} className="list-group-item">
-          {post.title}
+      {users.map(user => (
+        <li key={user.id} className="list-group-item">
+          {user.name}
         </li>
       ))}
     </ul>
   );
 };
 
-export default Posts;
+export default Users;

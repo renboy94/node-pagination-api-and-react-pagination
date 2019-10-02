@@ -1,8 +1,11 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+var cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./users");
+
+app.use(cors());
 
 mongoose.connect(
   `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds229108.mlab.com:29108/pagination`,
@@ -47,6 +50,8 @@ function paginatedResults(model) {
     const endIndex = page * limit;
 
     const results = {};
+
+    results.pages = Math.ceil((await model.countDocuments().exec()) / limit);
 
     if (endIndex < (await model.countDocuments().exec())) {
       results.next = {
