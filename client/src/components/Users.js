@@ -8,7 +8,7 @@ const Users = ({ users, loading }) => {
   return (
     <ul className="list-group mb-4">
       {users.map(user => (
-        <li key={user.id} className="list-group-item">
+        <li key={user._id} className="list-group-item">
           {user.name}
         </li>
       ))}
