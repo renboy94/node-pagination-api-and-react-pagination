@@ -10,6 +10,6 @@ git clone git@github.com:renboy94/node-pagination-api-and-react-pagination.git
 npm install
 
 # create .env file and put these keys
-DB_USER=renboy94
-DB_PASS=renboy94
+DB_USER=<username>
+DB_PASS=<password>
 ```
